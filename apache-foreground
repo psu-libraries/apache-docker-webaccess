@@ -10,7 +10,7 @@ a2enmod rewrite
 a2enmod authnz_ldap
 a2dismod mpm_event
 a2dismod mpm_worker
-a2dismod mpm_prefork
+a2enmod mpm_prefork
 a2enmod proxy proxy_balancer proxy_hcheck lbmethod_byrequests proxy_http headers proxy_connect proxy_html
 
 apache2 -DFOREGROUND
