@@ -7,11 +7,11 @@ steps:
   image: docker
   environment:
     DOCKER_PASSWORD:
-      from_secret: DOCKER_PASSWORD
+      from_secret: DOCKER_PUBLIC_PASSWORD
   commands:
   - export DOCKER_HOST=unix:///var/run/host.sock
   - if [[ $DRONE_TAG ]]; then export DOCKER_TAG=$DRONE_TAG; else export DOCKER_TAG=$DRONE_BUILD_NUMBER; fi 
-  - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
+  - docker login -u 'robot$droneci' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
   - docker build -t harbor.dsrd.libraries.psu.edu/public/apache-docker-webaccess:$DOCKER_TAG . 
   - docker tag harbor.dsrd.libraries.psu.edu/public/apache-docker-webaccess:$DOCKER_TAG harbor.dsrd.libraries.psu.edu/public/apache-docker-webaccess:latest
   - docker push harbor.dsrd.libraries.psu.edu/public/apache-docker-webaccess
@@ -29,6 +29,6 @@ volumes:
 
 ---
 kind: signature
-hmac: 57a312927d867c8191890759c011b3166ca927ddbbd353b830d51889e4d5f986
+hmac: 03e74a1a6faa307564c00a6d7b53cabe19710b855877a11b59b2453fcc740fad
 
 ...
