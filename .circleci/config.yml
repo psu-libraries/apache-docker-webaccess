@@ -1,0 +1,35 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+  docker: circleci/docker@0.5.20
+
+jobs:
+  build-and-push:
+    executor: docker/docker
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: public/apache-docker-webaccess
+      DOCKER_LOGIN: 'robot$circleci-public'
+    steps:
+    - setup_remote_docker
+    - checkout
+    - docker/check:
+        registry: $REGISTRY_HOST
+    - docker/build:
+        image: $REGISTRY_URL
+        registry: $REGISTRY_HOST
+    - docker/push:
+        image: $REGISTRY_URL
+        registry: $REGISTRY_HOST
+
+
+workflows:
+  version: 2
+  drone_utils:
+    jobs:
+      - build-and-push:
+        filters:
+          branches:
+            only:
+              - master
