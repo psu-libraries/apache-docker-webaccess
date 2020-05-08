@@ -14,6 +14,8 @@ RUN apt-get update && \
     -y \
     && rm -rf /var/lib/apt/lists/* 
 
+ADD files/addtrust-usertrust.pem /etc/ssl/certs/
+
 RUN dpkg -i /tmp/webaccess_3.3.0_amd64.deb
 RUN rm /tmp/webaccess_3.3.0_amd64.deb
 
