@@ -8,7 +8,7 @@ jobs:
   build-and-push:
     executor: docker/docker
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: public/apache-docker-webaccess
       DOCKER_LOGIN: 'robot$circleci-public'
     steps:
@@ -26,7 +26,7 @@ jobs:
   release:
     executor: docker/docker
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: public/apache-docker-webaccess
       DOCKER_LOGIN: 'robot$circleci-public'
     steps:
