@@ -1,3 +1,5 @@
+## v3.0.7
+- updates packages
 
 ## v3.0.6
 - updates vulnerable packages
