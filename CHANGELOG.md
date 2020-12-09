@@ -1,4 +1,4 @@
-## v4.0.0
+## v4.0.1
 - adds mod oidc, sets up oidc config based off env variables
 ## v3.0.9
 - updates packages
