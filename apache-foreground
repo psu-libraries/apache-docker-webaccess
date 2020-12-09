@@ -3,8 +3,47 @@
 source /etc/apache2/envvars
 mkdir /var/run/apache2
 
+# set oidc parameters
+
+if [ ! -z "${OIDC_METADATA_URL}" ]; then
+    sed -i "s,OIDC_METADATA_URL,"${OIDC_METADATA_URL}",g" /etc/apache2/conf-available/oidc.conf
+fi
+
+if [ ! -z "${OIDC_CLIENT_ID}" ]; then
+    sed -i "s,OIDC_CLIENT_ID,${OIDC_CLIENT_ID},g" /etc/apache2/conf-available/oidc.conf
+fi
+
+if [ ! -z "${OIDC_CLIENT_SECRET}" ]; then
+    sed -i "s,OIDC_CLIENT_SECRET,${OIDC_CLIENT_SECRET},g" /etc/apache2/conf-available/oidc.conf
+fi
+
+if [ ! -z "${OIDC_CRYPTO_PASSPHRASE}" ]; then
+    sed -i "s,OIDC_CRYPTO_PASSPHRASE,${OIDC_CRYPTO_PASSPHRASE},g" /etc/apache2/conf-available/oidc.conf
+fi
+
+# if all the proper oidc vars are set, we enable mod oidc
+required_vars=(OIDC_METADATA_URL OIDC_CLIENT_ID OIDC_CLIENT_SECRET OIDC_CRYPTO_PASSPHRASE)
+
+oidc_enabled=1
+for var in ${required_vars[@]}; do 
+  echo $var
+  if [ -z "${!var}" ]; then 
+    echo "missing ${var} disabling oidc"
+    oidc_enabled=0
+  else
+    echo "setting ${var}"
+    sed -i "s,${var},${!var},g" /etc/apache2/conf-available/oidc.conf
+  fi
+done
+echo $oidc_enabled
+if [ $oidc_enabled == 1 ]; then 
+  echo "enabling oidc config"
+  a2enconf oidc
+else
+  a2enmod cosign
+fi
+
 a2enmod ssl
-a2enmod cosign
 a2enmod ldap
 a2enmod rewrite
 a2enmod authnz_ldap

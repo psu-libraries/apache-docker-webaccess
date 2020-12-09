@@ -9,12 +9,14 @@ RUN apt-get update && \
     apt-get --no-install-recommends install \
     ca-certificates \
     apache2 \ 
+    libapache2-mod-auth-openidc \
     libssl1.0.0 \ 
     libssl-dev \
     -y \
     && rm -rf /var/lib/apt/lists/* 
 
 ADD files/addtrust-usertrust.pem /etc/ssl/certs/
+ADD config/oidc.conf /etc/apache2/conf-available/oidc.conf
 
 RUN dpkg -i /tmp/webaccess_3.3.0_amd64.deb
 RUN rm /tmp/webaccess_3.3.0_amd64.deb
