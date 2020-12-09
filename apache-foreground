@@ -3,25 +3,12 @@
 source /etc/apache2/envvars
 mkdir /var/run/apache2
 
+# pull in vault value if we have them 
+if [ -f /vault/secrets/config ]; then
+   . /vault/secrets/config
+fi
+
 # set oidc parameters
-
-if [ ! -z "${OIDC_METADATA_URL}" ]; then
-    sed -i "s,OIDC_METADATA_URL,"${OIDC_METADATA_URL}",g" /etc/apache2/conf-available/oidc.conf
-fi
-
-if [ ! -z "${OIDC_CLIENT_ID}" ]; then
-    sed -i "s,OIDC_CLIENT_ID,${OIDC_CLIENT_ID},g" /etc/apache2/conf-available/oidc.conf
-fi
-
-if [ ! -z "${OIDC_CLIENT_SECRET}" ]; then
-    sed -i "s,OIDC_CLIENT_SECRET,${OIDC_CLIENT_SECRET},g" /etc/apache2/conf-available/oidc.conf
-fi
-
-if [ ! -z "${OIDC_CRYPTO_PASSPHRASE}" ]; then
-    sed -i "s,OIDC_CRYPTO_PASSPHRASE,${OIDC_CRYPTO_PASSPHRASE},g" /etc/apache2/conf-available/oidc.conf
-fi
-
-# if all the proper oidc vars are set, we enable mod oidc
 required_vars=(OIDC_METADATA_URL OIDC_CLIENT_ID OIDC_CLIENT_SECRET OIDC_CRYPTO_PASSPHRASE)
 
 oidc_enabled=1
