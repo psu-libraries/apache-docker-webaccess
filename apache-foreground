@@ -30,7 +30,6 @@ else
   a2enmod cosign
 fi
 
-a2enmod ssl
 a2enmod ldap
 a2enmod rewrite
 a2enmod authnz_ldap
